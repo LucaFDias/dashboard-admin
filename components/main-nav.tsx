@@ -14,12 +14,21 @@ export function MainNav({
   const params = useParams();
   const routes = [
     {
-      href: `/${params.storeId}/settings`,
-      label: 'Configurações',
-      active: pathname === `/${params.storeId}/settings`
+      href: `/${params.storeId}/overview`,
+      label: "Visão geral",
+      active: pathname === `/${params.storeId}/overview`,
     },
-
-  ];
+    {
+      href: `/${params.storeId}/billboards`,
+      label: "Outdoors",
+      active: pathname === `/${params.storeId}/billboards`,
+    },
+    {
+      href: `/${params.storeId}/settings`,
+      label: "Configurações",
+      active: pathname === `/${params.storeId}/settings`,
+    },
+  ]
 
   return(
     <nav
