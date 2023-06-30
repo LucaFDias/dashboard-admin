@@ -23,8 +23,8 @@ import {
   FormMessage
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import ImageUploud from '@/components/ui/image-uploud';
 import { AlertModal } from '@/components/modals/alert-modal';
-import { ApiAlert } from '@/components/ui/api-alert';
 
 const formSchema = z.object({
   label: z.string().min(1, { message: "Deve ter 1 ou mais caracteres" }),
@@ -63,9 +63,15 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
   const onSubmit = async (data: BillboardFormValues) => {
     try {
       setLoading(true);
-      await axios.patch(`/api/stores/${params.storeId}`, data);
+      if (initialData) {
+        await axios.patch(`/api/${params.storeId}/billboards/${params.billboardId}`, data);
+        
+      } else {
+        await axios.patch(`/api/${params.storeId}/billboards`, data)
+        
+      }
       router.refresh();
-      toast.success("Loja atualizada.")
+      toast.success(toastMessage)
 
     } catch (error) {
       toast.error("Algo deu errado.");
@@ -78,14 +84,14 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
   const onDelete = async () => {
     try {
       setLoading(true);
-      await axios.delete(`/api/stores/${params.storeId}`);
+      await axios.delete(`/api/${params.storeId}/billboards/${params.billboardId}`);
       router.refresh();
       router.push("/")
-      toast.success("Loja deletada.")
+      toast.success("Outdoor deletado.")
 
     } catch (error) {
       toast.error(
-        "Certifique-se de ter removido todos os produtos e categorias primeiro."
+        "Certifique-se de remover todos os produtos do outdoor primeiro."
       );
 
     } finally {
@@ -96,34 +102,49 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
 
   return (
     <>
-    <AlertModal
-      isOpen={open}
-      onClose={() => setOpen(false)}
-      onConfirm={onDelete}
-      loading={loading}
-    />
+      <AlertModal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        onConfirm={onDelete}
+        loading={loading}
+      />
       <div className="flex items-center justify-between">
-        <Heading 
-          title={title}
-          description={description}
-        />
+        <Heading title={title} description={description} />
         {initialData && (
-            <Button
-              disabled={loading}
-              variant="destructive"
-              size="icon"
-              onClick={() => setOpen(true)}
-              >
-                <Trash className="h-4 w-4"/>
-            </Button>
-          )}
+          <Button
+            disabled={loading}
+            variant="destructive"
+            size="icon"
+            onClick={() => setOpen(true)}
+          >
+            <Trash className="h-4 w-4" />
+          </Button>
+        )}
       </div>
-      <Separator/>
+      <Separator />
       <Form {...form}>
-        <form 
+        <form
           className="space-y-8 w-full"
           onSubmit={form.handleSubmit(onSubmit)}
         >
+          <FormField
+            control={form.control}
+            name="imageUrl"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Background image</FormLabel>
+                <FormControl>
+                  <ImageUploud
+                    value={field.value ? [field.value] : []}
+                    disabled={loading}
+                    onChange={(url) => field.onChange(url)}
+                    onRemove={() => field.onChange("")}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <div className="grid grid-cols-3 gap-8">
             <FormField
               control={form.control}
@@ -138,18 +159,17 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage/>
+                  <FormMessage />
                 </FormItem>
               )}
             />
           </div>
-          <Button disabled={loading} className='ml-auto' type='submit'>
+          <Button disabled={loading} className="ml-auto" type="submit">
             {action}
           </Button>
         </form>
       </Form>
-      <Separator/>
-      
+      <Separator />
     </>
   )
 }

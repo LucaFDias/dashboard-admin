@@ -22,7 +22,7 @@ export async function PATCH(
     };
     
     if(!params.storeId) {
-      return new NextResponse("Store ID obrigatório", { status: 400});
+      return new NextResponse("Id da loja é obrigatório", { status: 400});
     };
 
     const store = await prismadb.store.updateMany({

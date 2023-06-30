@@ -29,7 +29,7 @@ export async function POST(
     return NextResponse.json(store);
 
   } catch (error) {
-    console.log('[STORES_POSTS]', error)
+    console.log('[STORES_POST]', error)
 
     return new NextResponse("Error iterno", {status: 500});
   }
