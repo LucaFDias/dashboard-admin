@@ -23,8 +23,8 @@ import { Modal } from "@/components/ui/modal";
 import { Button } from '@/components/ui/button';
 
 const formSchema = z.object({
-  name: z.string().min(1)
-});
+  name: z.string().min(1, { message: "Deve ter 1 ou mais caracteres" }),
+})
 
 export const StoreModal = () => {
   const storeModal = useStoreModal();
