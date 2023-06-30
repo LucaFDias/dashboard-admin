@@ -51,7 +51,6 @@ export const StoreModal = () => {
     
     } finally {
       setLoading(false);
-    
     }
   }
 
@@ -103,5 +102,5 @@ export const StoreModal = () => {
         </div>
       </div>
     </Modal>
-  )
+  );
 };
