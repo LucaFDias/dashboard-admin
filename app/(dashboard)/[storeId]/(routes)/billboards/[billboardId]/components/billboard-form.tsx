@@ -65,12 +65,12 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
         await axios.patch(`/api/${params.storeId}/billboards/${params.billboardId}`, data);
         
       } else {
-        await axios.post(`/api/${params.storeId}/billboards`, data)
+        await axios.post(`/api/${params.storeId}/billboards`, data);
         
       }
       router.refresh();
-      router.push(`/${params.storeId}/billboards`)
-      toast.success(toastMessage)
+      router.push(`/${params.storeId}/billboards`);
+      toast.success(toastMessage);
 
     } catch (error) {
       toast.error("Algo deu errado.");
@@ -79,14 +79,14 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
     }
   }
 
-  // Delete store confirmation
+  // Delete billboards confirmation
   const onDelete = async () => {
     try {
       setLoading(true);
       await axios.delete(`/api/${params.storeId}/billboards/${params.billboardId}`);
       router.refresh();
-      router.push("/")
-      toast.success("Outdoor deletado.")
+      router.push(`/${params.storeId}/billboards`);
+      toast.success("Outdoor deletado.");
 
     } catch (error) {
       toast.error(
@@ -168,7 +168,6 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
           </Button>
         </form>
       </Form>
-      <Separator />
     </>
   )
 }
