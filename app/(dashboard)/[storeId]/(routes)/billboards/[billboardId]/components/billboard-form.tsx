@@ -4,9 +4,9 @@ import * as z from 'zod';
 import axios from 'axios';
 import { useState } from 'react';
 import { Trash } from "lucide-react";
-import { Billboard } from "@prisma/client";
 import { toast } from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
+import { Billboard } from "@prisma/client";
 import { useOrigin } from '@/hooks/use-origin';
 import { zodResolver} from '@hookform/resolvers/zod';
 import { useParams, useRouter } from 'next/navigation'; 
@@ -48,7 +48,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
   const [ loading, setLoading ] = useState(false);
 
   const title = initialData ? "Editar outdoor" : "Criar outdoor"; 
-  const description = initialData ? "Editar um outdoor" : "Criar novo outdoor"
+  const description = initialData ? "Editar outdoor" : "Criar novo outdoor"
   const toastMessage = initialData ? "Outdoor atualizado." : "Outdoor criado."
   const action = initialData ? "Salvar mudanças" : "Criar" 
 
@@ -67,7 +67,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
         await axios.patch(`/api/${params.storeId}/billboards/${params.billboardId}`, data);
         
       } else {
-        await axios.patch(`/api/${params.storeId}/billboards`, data)
+        await axios.post(`/api/${params.storeId}/billboards`, data)
         
       }
       router.refresh();
@@ -155,7 +155,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
                   <FormControl>
                     <Input
                       disabled={loading}
-                      placeholder="Rótulo de outdoor"
+                      placeholder="Rótulo do outdoor"
                       {...field}
                     />
                   </FormControl>

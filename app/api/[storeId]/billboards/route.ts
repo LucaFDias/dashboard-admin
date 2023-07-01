@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(
   req: Request,
-  { params} : { params: { storeId: string}}
+  { params}: { params: { storeId: string}}
   
   ) {
   try {
@@ -16,29 +16,30 @@ export async function POST(
 
     if (!userId) {
       return new NextResponse("Não autenticado", { status: 401 });
-    }
+    };
 
     if (!label) {
       return new NextResponse("O label é obrigatório", { status: 400 });
-    }
+    };
+
     if (!imageUrl) {
       return new NextResponse("A Imagem Url é obrigatório", { status: 400 });
-    }
+    };
 
     if (!params.storeId) {
       return new NextResponse("Id da loja é obrigatório", { status: 400 });
-    }
+    };
 
     const storeByUserId = await prismadb.store.findFirst({
       where: {
         id: params.storeId,
         userId
       }
-    })
+    });
 
     if(!storeByUserId) {
-      return new NextResponse("Usuário não autorizado.", { status: 404 });
-    }
+      return new NextResponse("Usuário não autorizado.", { status: 403 });
+    };
 
     const billboard = await prismadb.billboard.create({
       data: {
@@ -70,7 +71,7 @@ export async function GET(
 
     const billboards = await prismadb.billboard.findMany({
       where: {
-        storeId: params.storeId
+        storeId: params.storeId,
       }
     });
 

@@ -13,7 +13,7 @@ interface ImageUploadProps {
   onChange: (value: string) => void;
   onRemove: (value: string) => void;
   value: string[];
-}
+};
 
 const ImageUploud: React.FC<ImageUploadProps> = ({
   disabled,
@@ -30,11 +30,11 @@ const ImageUploud: React.FC<ImageUploadProps> = ({
 
   const onUpload = (result: any) => {
     onChange(result.info.secure_url);
-  }
+  };
 
   if (!isMounted) {
     return null;
-  }
+  };
 
   return (
     <div>
@@ -80,7 +80,7 @@ const ImageUploud: React.FC<ImageUploadProps> = ({
         }}
       </CldUploadWidget>
     </div>
-  )
-}
+  );
+};
 
 export default ImageUploud;

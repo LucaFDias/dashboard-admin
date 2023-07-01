@@ -9,7 +9,6 @@ export async function GET(
   { params }: { params: { billboardId: string } }
 ) {
   try {
-
     if (!params.billboardId) {
       return new NextResponse("Id do outdoor obrigatório", { status: 400 })
     }
@@ -34,38 +33,38 @@ export async function PATCH(
   { params }: { params: { storeId: string, billboardId: string } }
 ) {
   try {
-    const { userId } = auth()
-    const body = await req.json()
+    const { userId } = auth();
+    const body = await req.json();
 
-    const { label, imageUrl } = body
+    const { label, imageUrl } = body;
 
     if (!userId) {
       return new NextResponse("Não autenticado", { status: 401 })
-    }
+    };
 
     if (!label) {
-      return new NextResponse("Label obrigatório", { status: 4000 })
-    }
+      return new NextResponse("Label obrigatório", { status: 400 })
+    };
 
     if (!imageUrl) {
-      return new NextResponse("Url da imagem é obrigatório", { status: 4000 })
-    }
+      return new NextResponse("Url da imagem é obrigatório", { status: 400 })
+    };
 
 
     if (!params.billboardId) {
       return new NextResponse("Id do outdoor é obrigatório", { status: 400 })
-    }
+    };
 
     const storeByUserId = await prismadb.store.findFirst({
       where: {
         id: params.storeId,
         userId,
       },
-    })
+    });
 
     if (!storeByUserId) {
-      return new NextResponse("Usuário não autorizado.", { status: 404 })
-    }
+      return new NextResponse("Usuário não autorizado.", { status: 403 })
+    };
 
     const billboard = await prismadb.billboard.updateMany({
       where: {
@@ -75,14 +74,14 @@ export async function PATCH(
         label,
         imageUrl
       },
-    })
-    return NextResponse.json(billboard)
+    });
+    return NextResponse.json(billboard);
   } catch (error) {
-    console.log("[BILLBOARD_PATCH", error)
+    console.log("[BILLBOARD_PATCH", error);
 
-    return new NextResponse("Internal error", { status: 500 })
-  }
-}
+    return new NextResponse("Internal error", { status: 500 });
+  };
+};
 
 //GET
 
@@ -91,36 +90,36 @@ export async function DELETE(
   { params }: { params: { storeId: string, billboardId: string } }
 ) {
   try {
-    const { userId } = auth()
+    const { userId } = auth();
 
     if (!userId) {
-      return new NextResponse("Não autenticado", { status: 401 })
-    }
+      return new NextResponse("Não autenticado", { status: 401 });
+    };
 
     if (!params.billboardId) {
-      return new NextResponse("Id do outdoor obrigatório", { status: 400 })
-    }
+      return new NextResponse("Id do outdoor obrigatório", { status: 400 });
+    };
 
     const storeByUserId = await prismadb.store.findFirst({
       where: {
         id: params.storeId,
         userId,
       },
-    })
+    });
 
     if (!storeByUserId) {
-      return new NextResponse("Usuário não autorizado.", { status: 404 })
-    }
+      return new NextResponse("Usuário não autorizado.", { status: 404 });
+    };
 
     const billboard = await prismadb.billboard.deleteMany({
       where: {
         id: params.billboardId,
       },
-    })
-    return NextResponse.json(billboard)
+    });
+    return NextResponse.json(billboard);
   } catch (error) {
-    console.log("[BILLBOARD_DELETE", error)
+    console.log("[BILLBOARD_DELETE", error);
 
-    return new NextResponse("Internal error", { status: 500 })
-  }
-}
+    return new NextResponse("Internal error", { status: 500 });
+  };
+};

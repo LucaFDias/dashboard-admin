@@ -10,7 +10,7 @@ const BillboardPage = async ({
     where: {
       id: params.billboardId
     }
-  })
+  });
 
   return (
     <div className="flex-col">
@@ -20,7 +20,7 @@ const BillboardPage = async ({
         />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default BillboardPage
+export default BillboardPage;
