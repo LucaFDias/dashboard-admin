@@ -7,7 +7,6 @@ import { Trash } from "lucide-react";
 import { toast } from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
 import { Billboard } from "@prisma/client";
-import { useOrigin } from '@/hooks/use-origin';
 import { zodResolver} from '@hookform/resolvers/zod';
 import { useParams, useRouter } from 'next/navigation'; 
 
@@ -42,7 +41,6 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
 }) => {
   const params = useParams();
   const router = useRouter();
-  const origin = useOrigin();
 
   const [ open, setOpen ] = useState(false);
   const [ loading, setLoading ] = useState(false);
@@ -71,6 +69,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
         
       }
       router.refresh();
+      router.push(`/${params.storeId}/billboards`)
       toast.success(toastMessage)
 
     } catch (error) {
