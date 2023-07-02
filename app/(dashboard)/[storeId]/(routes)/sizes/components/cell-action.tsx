@@ -11,7 +11,7 @@ import {
   Trash 
 } from "lucide-react";
 
-import { CategoryColumn } from "./columns";
+import { SizesColumn } from "./columns";
 import { Button } from "@/components/ui/button";
 import { AlertModal } from "@/components/modals/alert-modal";
 
@@ -24,8 +24,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 interface CellActionProps {
-  data: CategoryColumn
-};
+  data: SizesColumn
+}
 
 export const CellAction: React.FC<CellActionProps> = ({
   data
@@ -38,22 +38,22 @@ export const CellAction: React.FC<CellActionProps> = ({
   const [ open, setOpen ] = useState(false);
 
   const onCopy = (id: string) => {
-    navigator.clipboard.writeText(id);
-    toast.success("Id da categoria copiada para área de transferência.");
+    navigator.clipboard.writeText(id)
+    toast.success("Id do tamanho copiado para área de transferência.")
   };
 
   // Delete store confirmation
   const onDelete = async () => {
     try {
-      setLoading(true);
+      setLoading(true)
       await axios.delete(
-        `/api/${params.storeId}/categories/${data.id}`
+        `/api/${params.storeId}/sizes/${data.id}`
       );
       router.refresh();
-      toast.success("Categoria deletada.");
+      toast.success("Tamanho deletado.");
     } catch (error) {
       toast.error(
-        "Certifique-se de remover todos os produtos da categoria primeiro."
+        "Certifique-se de remover todos os produtos do tamanho primeiro."
       );
     } finally {
       setLoading(false);
@@ -84,7 +84,7 @@ export const CellAction: React.FC<CellActionProps> = ({
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() =>
-              router.push(`/${params.storeId}/categories/${data.id}`)
+              router.push(`/${params.storeId}/sizes/${data.id}`)
             }
           >
             <Edit className="mr-2 w-4 h-4" />
