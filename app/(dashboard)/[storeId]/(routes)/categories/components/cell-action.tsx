@@ -22,7 +22,7 @@ import {
   DropdownMenuLabel, 
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu";
-import { BillboardColumn } from "../../billboards/components/columns";
+
 
 interface CellActionProps {
   data: CategoryColumn
@@ -40,7 +40,7 @@ export const CellAction: React.FC<CellActionProps> = ({
 
   const onCopy = (id: string) => {
     navigator.clipboard.writeText(id)
-    toast.success("Outdoor id copiada para área de transferência.")
+    toast.success("Id da categoria copiada para área de transferência.")
   };
 
   // Delete store confirmation
@@ -48,13 +48,13 @@ export const CellAction: React.FC<CellActionProps> = ({
     try {
       setLoading(true)
       await axios.delete(
-        `/api/${params.storeId}/billboards/${data.id}`
+        `/api/${params.storeId}/categories/${data.id}`
       );
       router.refresh();
-      toast.success("Outdoor deletado.");
+      toast.success("Categoria deletada.");
     } catch (error) {
       toast.error(
-        "Certifique-se de remover todos os produtos do outdoor primeiro."
+        "Certifique-se de remover todos os produtos da categoria primeiro."
       );
     } finally {
       setLoading(false);
@@ -85,7 +85,7 @@ export const CellAction: React.FC<CellActionProps> = ({
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() =>
-              router.push(`/${params.storeId}/billboards/${data.id}`)
+              router.push(`/${params.storeId}/categories/${data.id}`)
             }
           >
             <Edit className="mr-2 w-4 h-4" />
