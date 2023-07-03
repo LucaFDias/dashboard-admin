@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { Trash } from "lucide-react";
 import { toast } from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
-import { Color } from "@prisma/client";
+import { Billboard } from "@prisma/client";
 import { zodResolver} from '@hookform/resolvers/zod';
 import { useParams, useRouter } from 'next/navigation'; 
 
@@ -22,23 +22,21 @@ import {
   FormMessage
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import ImageUploud from '@/components/ui/image-uploud';
 import { AlertModal } from '@/components/modals/alert-modal';
 
 const formSchema = z.object({
-  name: z.string().min(1, { message: "Deve ter 1 ou mais caracteres" }),
-  value: z
-    .string()
-    .min(4)
-    .regex(/^#/, { message: "string deve ser um código hexadecimal válido" }),
-})
+  label: z.string().min(1, { message: "Deve ter 1 ou mais caracteres" }),
+  imageUrl: z.string().min(1, { message: "Imagem é necessária"})
+});
 
-type ColorFormValues = z.infer<typeof formSchema>;
+type BillboardFormValues = z.infer<typeof formSchema>;
 
-interface ColorFormProps {
-  initialData: Color | null;
+interface BillboardFormProps {
+  initialData: Billboard | null;
 }
 
-export const ColorForm: React.FC<ColorFormProps> = ({
+export const BillboardForm: React.FC<BillboardFormProps> = ({
   initialData
 }) => {
   const params = useParams();
@@ -47,31 +45,31 @@ export const ColorForm: React.FC<ColorFormProps> = ({
   const [ open, setOpen ] = useState(false);
   const [ loading, setLoading ] = useState(false);
 
-  const title = initialData ? "Editar cor" : "Criar cor"; 
-  const description = initialData ? "Editar cor" : "Criar novo cor"
-  const toastMessage = initialData ? "Cor atualizada." : "Cor criada."
+  const title = initialData ? "Editar outdoor" : "Criar outdoor"; 
+  const description = initialData ? "Editar outdoor" : "Criar novo outdoor"
+  const toastMessage = initialData ? "Outdoor atualizado." : "Outdoor criado."
   const action = initialData ? "Salvar mudanças" : "Criar" 
 
-  const form = useForm<ColorFormValues>({
+  const form = useForm<BillboardFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
-      name: '',
-      value: '',
+      label: '',
+      imageUrl: '',
     }
   });
 
-  const onSubmit = async (data: ColorFormValues) => {
+  const onSubmit = async (data: BillboardFormValues) => {
     try {
       setLoading(true);
       if (initialData) {
-        await axios.patch(`/api/${params.storeId}/colors/${params.colorId}`, data);
+        await axios.patch(`/api/${params.storeId}/billboards/${params.billboardId}`, data);
         
       } else {
-        await axios.post(`/api/${params.storeId}/colors`, data);
+        await axios.post(`/api/${params.storeId}/billboards`, data);
         
       }
       router.refresh();
-      router.push(`/${params.storeId}/colors`);
+      router.push(`/${params.storeId}/billboards`);
       toast.success(toastMessage);
 
     } catch (error) {
@@ -81,18 +79,18 @@ export const ColorForm: React.FC<ColorFormProps> = ({
     }
   }
 
-  // Delete colors confirmation
+  // Delete billboards confirmation
   const onDelete = async () => {
     try {
       setLoading(true);
-      await axios.delete(`/api/${params.storeId}/colors/${params.colorId}`);
+      await axios.delete(`/api/${params.storeId}/billboards/${params.billboardId}`);
       router.refresh();
-      router.push(`/${params.storeId}/colors`);
-      toast.success("Cor deletado.");
+      router.push(`/${params.storeId}/billboards`);
+      toast.success("Outdoor deletado.");
 
     } catch (error) {
       toast.error(
-        "Certifique-se de remover todos os produtos do cor primeiro."
+        "Certifique-se de remover todos os produtos do outdoor primeiro."
       );
 
     } finally {
@@ -128,43 +126,37 @@ export const ColorForm: React.FC<ColorFormProps> = ({
           className="space-y-8 w-full"
           onSubmit={form.handleSubmit(onSubmit)}
         >
+          <FormField
+            control={form.control}
+            name="imageUrl"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Background image</FormLabel>
+                <FormControl>
+                  <ImageUploud
+                    value={field.value ? [field.value] : []}
+                    disabled={loading}
+                    onChange={(url) => field.onChange(url)}
+                    onRemove={() => field.onChange("")}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <div className="grid grid-cols-3 gap-8">
             <FormField
               control={form.control}
-              name="name"
+              name="label"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Nome</FormLabel>
                   <FormControl>
                     <Input
                       disabled={loading}
-                      placeholder="Cor nome"
+                      placeholder="Rótulo do outdoor"
                       {...field}
                     />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="value"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Valor</FormLabel>
-                  <FormControl>
-                    <div className='flex items-center gap-x-4'>
-
-                    <Input
-                      disabled={loading}
-                      placeholder="Cor valor"
-                      {...field}
-                    />
-                    <div
-                      className='border p-4 rounded-full'
-                      style={{ backgroundColor: field.value}}
-                    />
-                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

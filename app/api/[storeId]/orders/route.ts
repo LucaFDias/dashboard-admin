@@ -12,18 +12,18 @@ export async function POST(
     const { userId } = auth();
     const body = await req.json();
 
-    const { name, value } = body;
+    const { label, imageUrl } = body;
 
     if (!userId) {
       return new NextResponse("Não autenticado", { status: 401 });
     };
 
-    if (!name) {
-      return new NextResponse("O nome é obrigatório", { status: 400 });
+    if (!label) {
+      return new NextResponse("O label é obrigatório", { status: 400 });
     };
 
-    if (!value) {
-      return new NextResponse("O valor é obrigatório", { status: 400 });
+    if (!imageUrl) {
+      return new NextResponse("A Imagem Url é obrigatório", { status: 400 });
     };
 
     if (!params.storeId) {
@@ -41,17 +41,17 @@ export async function POST(
       return new NextResponse("Usuário não autorizado.", { status: 403 });
     };
 
-    const color = await prismadb.color.create({
+    const billboard = await prismadb.billboard.create({
       data: {
-        name,
-        value,
+        label,
+        imageUrl,
         storeId: params.storeId,
       },
     });
 
-    return NextResponse.json(color)
+    return NextResponse.json(billboard)
   } catch (error) {
-    console.log("[COLORS_POST]", error)
+    console.log("[BILLBOARDS_POST]", error)
 
     return new NextResponse("Error iterno", { status: 500 })
   };
@@ -69,15 +69,15 @@ export async function GET(
       return new NextResponse("Id da loja é obrigatório", { status: 400 });
     }
 
-    const colors = await prismadb.color.findMany({
+    const billboards = await prismadb.billboard.findMany({
       where: {
         storeId: params.storeId,
       }
     });
 
-    return NextResponse.json(colors)
+    return NextResponse.json(billboards)
   } catch (error) {
-    console.log("[COLORS_GET]", error)
+    console.log("[BILLBOARDS_GET]", error)
 
     return new NextResponse("Error iterno", { status: 500 })
   };
