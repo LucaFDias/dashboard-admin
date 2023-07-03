@@ -14,9 +14,9 @@ export function MainNav({
   const params = useParams();
   const routes = [
     {
-      href: `/${params.storeId}/overview`,
+      href: `/${params.storeId}/`,
       label: "Visão geral",
-      active: pathname === `/${params.storeId}/overview`,
+      active: pathname === `/${params.storeId}/`,
     },
     {
       href: `/${params.storeId}/billboards`,

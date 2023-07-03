@@ -11,7 +11,7 @@ import {
   Trash 
 } from "lucide-react";
 
-import { BillboardColumn } from "./columns";
+import { OrderColumn } from "./columns";
 import { Button } from "@/components/ui/button";
 import { AlertModal } from "@/components/modals/alert-modal";
 
@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 interface CellActionProps {
-  data: BillboardColumn
+  data: OrderColumn
 }
 
 export const CellAction: React.FC<CellActionProps> = ({
@@ -39,7 +39,7 @@ export const CellAction: React.FC<CellActionProps> = ({
 
   const onCopy = (id: string) => {
     navigator.clipboard.writeText(id)
-    toast.success("Outdoor id copiada para área de transferência.")
+    toast.success("Oderm id copiada para área de transferência.")
   };
 
   // Delete store confirmation
@@ -47,13 +47,13 @@ export const CellAction: React.FC<CellActionProps> = ({
     try {
       setLoading(true)
       await axios.delete(
-        `/api/${params.storeId}/billboards/${data.id}`
+        `/api/${params.storeId}/orders/${data.id}`
       );
       router.refresh();
-      toast.success("Outdoor deletado.");
+      toast.success("Oderm deletada.");
     } catch (error) {
       toast.error(
-        "Certifique-se de remover todos os produtos do outdoor primeiro."
+        "Certifique-se de remover todos os produtos da ordem primeiro."
       );
     } finally {
       setLoading(false);
@@ -84,7 +84,7 @@ export const CellAction: React.FC<CellActionProps> = ({
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() =>
-              router.push(`/${params.storeId}/billboards/${data.id}`)
+              router.push(`/${params.storeId}/orders/${data.id}`)
             }
           >
             <Edit className="mr-2 w-4 h-4" />
