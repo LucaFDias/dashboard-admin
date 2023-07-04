@@ -1,7 +1,7 @@
 <h1>Painel Administrativo com Next.js, Prisma e MySQL</h1>
 <p>Este é um projeto de um painel administrativo construído utilizando as seguintes tecnologias: Next.js, shadcnUI, Prisma e MySQL (PlanetScaledb). Ele permite a criação, leitura, atualização e exclusão (CRUD) de dados em um banco de dados MySQL, além de fornecer uma interface amigável para gerenciar conteúdo administrativo.</p>
 
-![Screenshot_1](https://github.com/LucaFDias/dashboard-admin/assets/91148856/394c5df6-4d34-408d-8aa7-31652563d950)"
+![Screenshot_1](https://github.com/LucaFDias/dashboard-admin/assets/91148856/394c5df6-4d34-408d-8aa7-31652563d950)
 
 <h3>Funcionalidades</h3>
 <p>Autenticação de usuário com controle de acesso. (Clerk Auth, acesso com Google)</p>
